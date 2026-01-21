@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -43,8 +43,8 @@ FontsPage::FontsPage(QWidget *parent) :
 {
     m_ui->setupUi(this);
 
-    connect(m_ui->changeGeneralFontButton, &QToolButton::clicked, [=] { onFontChangeRequested(m_ui->generalFontLabel); } );
-    connect(m_ui->changeFixedWidthFontButton, &QToolButton::clicked, [=] { onFontChangeRequested(m_ui->fixedFontLabel); } );
+    connect(m_ui->changeGeneralFontButton, &QToolButton::clicked, this, [=] { onFontChangeRequested(m_ui->generalFontLabel); } );
+    connect(m_ui->changeFixedWidthFontButton, &QToolButton::clicked, this, [=] { onFontChangeRequested(m_ui->fixedFontLabel); } );
 
     readSettings();
 
@@ -62,8 +62,8 @@ void FontsPage::writeSettings()
 {
     QSettings settings(Qt5CT::configFile(), QSettings::IniFormat);
     settings.beginGroup("Fonts");
-    settings.setValue("general", m_ui->generalFontLabel->font());
-    settings.setValue("fixed", m_ui->fixedFontLabel->font());
+    settings.setValue("general", m_ui->generalFontLabel->font().toString());
+    settings.setValue("fixed", m_ui->fixedFontLabel->font().toString());
     settings.endGroup();
 }
 
@@ -89,8 +89,9 @@ void FontsPage::readSettings()
 
 void FontsPage::loadFont(QSettings *settings, QLabel *label, const QString &key)
 {
-    QFont font = settings->value(key, QApplication::font()).value<QFont>();
-    label->setText(font.family () + " " + QString::number(font.pointSize ()));
+    QFont font = QApplication::font();
+    font.fromString(settings->value(key, QApplication::font().toString()).toString());
+    label->setText(font.family() + " " + QString::number(font.pointSize()));
     label->setFont(font);
 }
 

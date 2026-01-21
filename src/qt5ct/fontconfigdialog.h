@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -45,7 +45,7 @@ public:
     explicit FontConfigDialog(QWidget *parent = nullptr);
     ~FontConfigDialog();
 
-public Q_SLOTS:
+public slots:
     void accept() override;
     void writeOption(QXmlStreamWriter *stream, const QString &name, const QVariant &value);
 

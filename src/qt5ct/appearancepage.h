@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -49,7 +49,7 @@ public:
 
     void writeSettings() override;
 
-private Q_SLOTS:
+private slots:
     void on_styleComboBox_activated(const QString &text);
     void on_colorSchemeComboBox_activated(int);
     void createColorScheme();
@@ -62,12 +62,12 @@ private Q_SLOTS:
     void updateActions();
 
 private:
+    void changeEvent(QEvent *event) override;
     void readSettings();
     void setStyle(QWidget *w, QStyle *s);
     void setPalette(QWidget *w, QPalette p);
     void findColorSchemes(const QString &path);
     void findColorSchemes(const QStringList &paths);
-    QPalette loadColorScheme(const QString &filePath);
     void createColorScheme(const QString &name, const QPalette &palette);
     Ui::AppearancePage *m_ui;
     QStyle *m_selectedStyle = nullptr;

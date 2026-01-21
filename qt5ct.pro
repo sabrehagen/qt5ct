@@ -1,6 +1,8 @@
+CONFIG += ordered
+
 TEMPLATE = subdirs
 
-SUBDIRS += src/qt5ct-qtplugin src/qt5ct-style src/qt5ct
+SUBDIRS += src/qt5ct-common  src/qt5ct-qtplugin src/qt5ct-style src/qt5ct
 
 
 unix:exists($$[QT_INSTALL_BINS]/lrelease){
@@ -40,6 +42,7 @@ INSTALLS += qss colors
 
 message (PREFIX=$$PREFIX)
 message (BINDIR=$$BINDIR)
+message (LIBDIR=$$LIBDIR)
 message (DATADIR=$$DATADIR)
 message (PLUGINDIR=$$PLUGINDIR)
 equals (DISABLE_WIDGETS,1):message ("Qt Widgets are disabled!")

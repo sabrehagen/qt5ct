@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -110,14 +110,14 @@ void PaletteEditDialog::on_tableWidget_itemClicked(QTableWidgetItem *item)
     if(color.isValid())
     {
         item->setBackground(color);
-        Q_EMIT paletteChanged(selectedPalette());
+        emit paletteChanged(selectedPalette());
     }
 }
 
 void PaletteEditDialog::on_resetPaletteButton_clicked()
 {
     setPalette(m_currentStyle->standardPalette());
-    Q_EMIT paletteChanged(selectedPalette());
+    emit paletteChanged(selectedPalette());
 }
 
 void PaletteEditDialog::on_buildInactiveButton_clicked()
@@ -129,7 +129,7 @@ void PaletteEditDialog::on_buildInactiveButton_clicked()
                          palette.color(QPalette::Active, QPalette::ColorRole(i)));
     }
     setPalette(palette);
-    Q_EMIT paletteChanged(selectedPalette());
+    emit paletteChanged(selectedPalette());
 }
 
 void PaletteEditDialog::on_buildDisabledButton_clicked()
@@ -145,5 +145,5 @@ void PaletteEditDialog::on_buildDisabledButton_clicked()
     palette.setColor(QPalette::Disabled, QPalette::Text, Qt::darkGray);
     palette.setColor(QPalette::Disabled, QPalette::HighlightedText, Qt::darkGray);
     setPalette(palette);
-    Q_EMIT paletteChanged(selectedPalette());
+    emit paletteChanged(selectedPalette());
 }

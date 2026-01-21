@@ -14,13 +14,13 @@ SOURCES += \
     tabpage.cpp \
     appearancepage.cpp \
     fontspage.cpp \
-    qt5ct.cpp \
     paletteeditdialog.cpp \
     iconthemepage.cpp \
     interfacepage.cpp \
     fontconfigdialog.cpp \
     qsspage.cpp \
-    qsseditordialog.cpp
+    qsseditordialog.cpp \
+    troubleshootingpage.cpp
 
 FORMS += \
     mainwindow.ui \
@@ -32,20 +32,21 @@ FORMS += \
     fontconfigdialog.ui \
     previewform.ui \
     qsspage.ui \
-    qsseditordialog.ui
+    qsseditordialog.ui \
+    troubleshootingpage.ui
 
 HEADERS += \
     mainwindow.h \
     tabpage.h \
     appearancepage.h \
     fontspage.h \
-    qt5ct.h \
     paletteeditdialog.h \
     iconthemepage.h \
     interfacepage.h \
     fontconfigdialog.h \
     qsspage.h \
-    qsseditordialog.h
+    qsseditordialog.h \
+    troubleshootingpage.h
 
 !equals (DISABLE_WIDGETS,1) {
    DEFINES += USE_WIDGETS

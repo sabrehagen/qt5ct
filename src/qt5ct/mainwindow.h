@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -46,7 +46,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private Q_SLOTS:
+private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
     void on_infoButton_clicked();
 

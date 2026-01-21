@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -53,6 +53,11 @@ IconThemePage::IconThemePage(QWidget *parent) :
 
 IconThemePage::~IconThemePage()
 {
+    if(m_watcher->isRunning())
+    {
+        m_stopped = true;
+        m_watcher->waitForFinished();
+    }
     delete m_ui;
 }
 
@@ -103,6 +108,8 @@ void IconThemePage::readSettings()
 
 QList<QTreeWidgetItem *> IconThemePage::loadThemes()
 {
+    m_stopped = false;
+
     QFileInfoList themeFileList;
     QList<QTreeWidgetItem *> items;
     for(const QString &path : Qt5CT::iconPaths())
@@ -112,17 +119,27 @@ QList<QTreeWidgetItem *> IconThemePage::loadThemes()
         for(const QFileInfo &info : dir.entryInfoList())
         {
             QDir themeDir(info.absoluteFilePath());
-            themeDir.setFilter(QDir::Files);
-            themeFileList << themeDir.entryInfoList(QStringList() << "index.theme");
+            themeFileList << themeDir.entryInfoList(QStringList() << "index.theme", QDir::Files);
         }
+
+        if(m_stopped)
+            return items;
     }
 
     int i = 0;
-    for(const QFileInfo &info : themeFileList)
+    for(const QFileInfo &info : qAsConst(themeFileList))
     {
         QTreeWidgetItem *item = loadTheme(info.canonicalFilePath());
         if(item)
-            items << loadTheme(info.canonicalFilePath());
+            items << item;
+
+        if(m_stopped)
+        {
+            qDeleteAll(items);
+            items.clear();
+            return items;
+        }
+
         QMetaObject::invokeMethod(m_progressBar, "setValue", Qt::QueuedConnection, Q_ARG(int, ++i * 100 / themeFileList.count()));
     }
     return items;
@@ -138,14 +155,13 @@ QTreeWidgetItem *IconThemePage::loadTheme(const QString &path)
     if(dirs.isEmpty() || config.value("Hidden", false).toBool())
         return nullptr;
 
-    QString name, comment;
     QString lang = QLocale::system().name();
 
-    name = config.value(QString("Name[%1]").arg(lang)).toString();
-    comment = config.value(QString("Comment[%1]").arg(lang)).toString();
+    QString name = config.value(QString("Name[%1]").arg(lang)).toString();
+    QString comment = config.value(QString("Comment[%1]").arg(lang)).toString();
 
     if(lang.contains("_"))
-        lang = lang.split("_").first();
+        lang = lang.split("_").constFirst();
 
     if(name.isEmpty())
         name = config.value(QString("Name[%1]").arg(lang)).toString();
@@ -178,17 +194,24 @@ QTreeWidgetItem *IconThemePage::loadTheme(const QString &path)
 
 QIcon IconThemePage::findIcon(const QString &themePath, int size, const QString &name)
 {
+    QStringList visited;
+    return findIconHelper(themePath, size, name, &visited);
+}
+
+QIcon IconThemePage::findIconHelper(const QString &themePath, int size, const QString &name, QStringList *visited)
+{
     QSettings config(themePath, QSettings::IniFormat);
     config.beginGroup("Icon Theme");
     QStringList dirs = config.value("Directories").toStringList();
     QStringList parents = config.value("Inherits").toStringList();
+    visited->append(config.value("Name").toString());
     bool haveInherits = !parents.isEmpty();
     config.endGroup();
 
     QString iconPath;
     int iconSize = 0;
 
-    for(const QString &dir : dirs)
+    for(const QString &dir : qAsConst(dirs))
     {
         config.beginGroup(dir);
         QDir iconDir = QFileInfo(themePath).path() + "/" + dir;
@@ -204,7 +227,7 @@ QIcon IconThemePage::findIcon(const QString &themePath, int size, const QString 
             iconDir.setFilter(QDir::Files);
             iconDir.setNameFilters(QStringList () << name + "-*.*");
             if(!iconDir.entryInfoList().isEmpty())
-                p = iconDir.entryInfoList().first().absoluteFilePath();
+                p = iconDir.entryInfoList().constFirst().absoluteFilePath();
         }
 
         if(p.isEmpty())
@@ -234,14 +257,14 @@ QIcon IconThemePage::findIcon(const QString &themePath, int size, const QString 
     parents.append("gnome");
     parents.removeDuplicates();
 
-    for(const QString &parent : parents)
+    for(const QString &parent : qAsConst(parents))
     {
         QString parentThemePath = QDir(QFileInfo(themePath).path() + "/../" + parent).canonicalPath() + "/index.theme";
 
-        if(!QFile::exists(parentThemePath) || parentThemePath == themePath)
+        if(!QFile::exists(parentThemePath) || visited->contains(parent)) //protect against recursion
             continue;
 
-        QIcon icon = findIcon(parentThemePath, size, name);
+        QIcon icon = findIconHelper(parentThemePath, size, name, visited);
         if(!icon.isNull())
             return icon;
     }

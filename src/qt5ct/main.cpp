@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -38,17 +38,16 @@
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
     QGuiApplication::setDesktopFileName("qt5ct.desktop");
-#endif
+
     QTranslator translator;
-    QString locale = Qt5CT::systemLanguageID();
-    translator.load(QString(":/qt5ct_") + locale);
-    app.installTranslator(&translator);
+
+    if(translator.load(QLocale(), QStringLiteral("qt5ct"), QStringLiteral("_"), QStringLiteral(":/")))
+        QCoreApplication::installTranslator(&translator);
 
     QTranslator qt_translator;
-    qt_translator.load(QLibraryInfo::location (QLibraryInfo::TranslationsPath) + "/qtbase_" + locale);
-    app.installTranslator(&qt_translator);
+    if(qt_translator.load(QLocale(), QStringLiteral("qtbase"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        app.installTranslator(&qt_translator);
 
     Qt5CT::initConfig();
 

@@ -43,6 +43,9 @@ Name[ru]=Настройки Qt5
 Comment[it_IT]=Strumento di configurazione Qt5
 Name[it_IT]=Impostazioni Qt5
 
+Comment[ja]=Qt5 設定ツール
+Name[ja]=Qt5 の設定
+
 Comment[nl_NL]=Qt5-instellingen
 Name[nl_NL]=Qt5-instellingen
 
@@ -58,6 +61,9 @@ Name[sr]=Qt5 поставке
 Comment[tr]=Qt5 Yapılandırma Aracı
 Name[tr]=Qt5 Ayarları
 
+Comment[uk]=Інструмент налаштування Qt5
+Name[uk]=Налаштування Qt5
+
 Comment[zh_CN]=Qt5 配置工具
 Name[zh_CN]=Qt5 设置
 
@@ -70,3 +76,4 @@ Icon=preferences-desktop-theme
 Terminal=false
 Type=Application
 Categories=Settings;DesktopSettings;Qt;
+Keywords=settings;desktop;qt;qtsettings;qt5;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -31,6 +31,7 @@
 
 #include <QIcon>
 #include <QFutureWatcher>
+#include <atomic>
 #include "tabpage.h"
 
 namespace Ui {
@@ -50,7 +51,7 @@ public:
 
     void writeSettings() override;
 
-private Q_SLOTS:
+private slots:
     void onFinished();
 
 private:
@@ -59,9 +60,11 @@ private:
     QList<QTreeWidgetItem *> loadThemes();
     QTreeWidgetItem *loadTheme(const QString &path);
     QIcon findIcon(const QString &themePath, int size, const QString &name);
+    QIcon findIconHelper(const QString &themePath, int size, const QString &name, QStringList *visited);
     Ui::IconThemePage *m_ui;
     QFutureWatcher<QList<QTreeWidgetItem *>> *m_watcher;
     QProgressBar *m_progressBar;
+    std::atomic_bool m_stopped = ATOMIC_VAR_INIT(false);
 };
 
 #endif // ICONTHEMEPAGE_H

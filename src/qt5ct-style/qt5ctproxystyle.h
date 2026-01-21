@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -30,18 +30,21 @@
 #define QT5CTPROXYSTYLE_H
 
 #include <QProxyStyle>
+#include "qt5ct.h"
 
-class Qt5CTProxyStyle : public QProxyStyle
+class Qt5CTProxyStyle : public QProxyStyle, public Qt5CT::StyleInstance
 {
     Q_OBJECT
 public:
-    explicit Qt5CTProxyStyle(const QString &key);
+    explicit Qt5CTProxyStyle();
+    void reloadSettings() override;
 
     virtual ~Qt5CTProxyStyle();
 
     int styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const override;
 
 private:
+    QString m_style;
     int m_dialogButtonsHaveIcons;
     int m_activateItemOnSingleClick;
     int m_underlineShortcut;

@@ -4,148 +4,138 @@
 <context>
     <name>AppearancePage</name>
     <message>
-        <location filename="../appearancepage.ui" line="20"/>
+        <location filename="../appearancepage.ui" line="22"/>
         <source>Style:</source>
         <translation>Styl:</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="59"/>
+        <location filename="../appearancepage.ui" line="107"/>
         <source>Preview</source>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="69"/>
+        <location filename="../appearancepage.ui" line="117"/>
         <source>Active palette</source>
         <translation>Aktywna paleta</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="74"/>
+        <location filename="../appearancepage.ui" line="122"/>
         <source>Inactive palette</source>
         <translation>Nieaktywna paleta</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="79"/>
+        <location filename="../appearancepage.ui" line="127"/>
         <source>Disabled palette</source>
         <translation>Wyłączona paleta</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="113"/>
-        <source>Palette</source>
-        <translation>Paleta</translation>
-    </message>
-    <message>
-        <location filename="../appearancepage.ui" line="124"/>
-        <location filename="../appearancepage.cpp" line="88"/>
+        <location filename="../appearancepage.cpp" line="81"/>
+        <location filename="../appearancepage.cpp" line="370"/>
         <source>Default</source>
         <translation>Domyślna</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="134"/>
-        <source>Custom</source>
-        <translation>Niestandardowa</translation>
-    </message>
-    <message>
-        <location filename="../appearancepage.ui" line="161"/>
+        <location filename="../appearancepage.ui" line="42"/>
         <source>Color scheme:</source>
         <translation>Zestaw kolorów:</translation>
     </message>
     <message>
-        <location filename="../appearancepage.ui" line="187"/>
-        <source>...</source>
-        <translation>Działania</translation>
-    </message>
-    <message>
-        <location filename="../appearancepage.ui" line="218"/>
+        <location filename="../appearancepage.ui" line="82"/>
         <source>Standard dialogs:</source>
         <translation>Standardowe okna dialogowe:</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="71"/>
+        <location filename="../appearancepage.cpp" line="68"/>
         <source>Create</source>
         <translation>Nowy...</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="72"/>
+        <location filename="../appearancepage.cpp" line="69"/>
         <source>Edit</source>
         <translation>Edytuj...</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="73"/>
+        <location filename="../appearancepage.cpp" line="70"/>
         <source>Create a Copy</source>
         <translation>Powiel...</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="74"/>
+        <location filename="../appearancepage.cpp" line="71"/>
         <source>Rename</source>
         <translation>Zmień nazwę...</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="76"/>
+        <location filename="../appearancepage.cpp" line="73"/>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="143"/>
-        <location filename="../appearancepage.cpp" line="217"/>
-        <location filename="../appearancepage.cpp" line="256"/>
+        <location filename="../appearancepage.cpp" line="166"/>
+        <location filename="../appearancepage.cpp" line="240"/>
+        <location filename="../appearancepage.cpp" line="279"/>
         <source>Enter Color Scheme Name</source>
         <translation>Wprowadź nazwę zestawu kolorów</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="143"/>
-        <location filename="../appearancepage.cpp" line="217"/>
-        <location filename="../appearancepage.cpp" line="256"/>
+        <location filename="../appearancepage.cpp" line="166"/>
+        <location filename="../appearancepage.cpp" line="240"/>
+        <location filename="../appearancepage.cpp" line="279"/>
         <source>File name:</source>
         <translation>Nazwa pliku:</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="152"/>
-        <location filename="../appearancepage.cpp" line="228"/>
-        <location filename="../appearancepage.cpp" line="236"/>
-        <location filename="../appearancepage.cpp" line="266"/>
+        <location filename="../appearancepage.cpp" line="175"/>
+        <location filename="../appearancepage.cpp" line="251"/>
+        <location filename="../appearancepage.cpp" line="259"/>
+        <location filename="../appearancepage.cpp" line="289"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="152"/>
-        <location filename="../appearancepage.cpp" line="228"/>
-        <location filename="../appearancepage.cpp" line="266"/>
+        <location filename="../appearancepage.cpp" line="175"/>
+        <location filename="../appearancepage.cpp" line="251"/>
+        <location filename="../appearancepage.cpp" line="289"/>
         <source>The color scheme &quot;%1&quot; already exists</source>
         <translation>Zestaw kolorów „%1” już istnieje</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="170"/>
         <location filename="../appearancepage.cpp" line="193"/>
-        <location filename="../appearancepage.cpp" line="251"/>
+        <location filename="../appearancepage.cpp" line="216"/>
+        <location filename="../appearancepage.cpp" line="274"/>
         <source>Warning</source>
         <translation>Ostrzeżenie</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="170"/>
         <location filename="../appearancepage.cpp" line="193"/>
-        <location filename="../appearancepage.cpp" line="251"/>
+        <location filename="../appearancepage.cpp" line="216"/>
+        <location filename="../appearancepage.cpp" line="274"/>
         <source>The color scheme &quot;%1&quot; is read only</source>
         <translation>Zestaw kolorów „%1” jest tylko do odczytu</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="198"/>
+        <location filename="../appearancepage.cpp" line="221"/>
         <source>Confirm Remove</source>
         <translation>Potwierdź usunięcie</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="199"/>
+        <location filename="../appearancepage.cpp" line="222"/>
         <source>Are you sure you want to remove color scheme &quot;%1&quot;?</source>
         <translation>Czy na pewno chcesz usunąć zestaw kolorów „%1”?</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="219"/>
+        <location filename="../appearancepage.cpp" line="242"/>
         <source>%1 (copy)</source>
         <translation>%1 (kopia)</translation>
     </message>
     <message>
-        <location filename="../appearancepage.cpp" line="236"/>
+        <location filename="../appearancepage.cpp" line="259"/>
         <source>Unable to copy file</source>
         <translation>Nie można skopiować pliku</translation>
+    </message>
+    <message>
+        <location filename="../appearancepage.cpp" line="371"/>
+        <source>Style&apos;s colors</source>
+        <translation>Kolory stylu</translation>
     </message>
 </context>
 <context>
@@ -259,12 +249,12 @@
         <translation>Usuń fonts.conf</translation>
     </message>
     <message>
-        <location filename="../fontspage.cpp" line="110"/>
+        <location filename="../fontspage.cpp" line="111"/>
         <source>Remove Font Configuration</source>
         <translation>Usuń plik konfiguracyjny czcionek</translation>
     </message>
     <message>
-        <location filename="../fontspage.cpp" line="111"/>
+        <location filename="../fontspage.cpp" line="112"/>
         <source>Are you sure you want to delete &lt;i&gt;%1&lt;/i&gt;?</source>
         <translation>Czy na pewno chcesz usunąć plik &lt;i&gt;%1&lt;/i&gt;?</translation>
     </message>
@@ -380,27 +370,27 @@
         <translation>Pokaż skróty klawiszowe w menu kontekstowych</translation>
     </message>
     <message>
-        <location filename="../interfacepage.cpp" line="61"/>
+        <location filename="../interfacepage.cpp" line="55"/>
         <source>Only display the icon</source>
         <translation>Tylko ikony</translation>
     </message>
     <message>
-        <location filename="../interfacepage.cpp" line="62"/>
+        <location filename="../interfacepage.cpp" line="56"/>
         <source>Only display the text</source>
         <translation>Tylko tekst</translation>
     </message>
     <message>
-        <location filename="../interfacepage.cpp" line="63"/>
+        <location filename="../interfacepage.cpp" line="57"/>
         <source>The text appears beside the icon</source>
         <translation>Tekst obok ikon</translation>
     </message>
     <message>
-        <location filename="../interfacepage.cpp" line="64"/>
+        <location filename="../interfacepage.cpp" line="58"/>
         <source>The text appears under the icon</source>
         <translation>Tekst pod ikonami</translation>
     </message>
     <message>
-        <location filename="../interfacepage.cpp" line="65"/>
+        <location filename="../interfacepage.cpp" line="59"/>
         <source>Follow the application style</source>
         <translation>Zgodnie ze stylem aplikacji</translation>
     </message>
@@ -428,57 +418,62 @@
         <translation>Ukryj</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="49"/>
+        <location filename="../mainwindow.cpp" line="50"/>
         <source>Appearance</source>
         <translation>Wygląd</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="50"/>
+        <location filename="../mainwindow.cpp" line="51"/>
         <source>Fonts</source>
         <translation>Czcionki</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="51"/>
+        <location filename="../mainwindow.cpp" line="52"/>
         <source>Icon Theme</source>
         <translation>Motyw ikon</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="52"/>
+        <location filename="../mainwindow.cpp" line="53"/>
         <source>Interface</source>
         <translation>Interfejs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="54"/>
+        <location filename="../mainwindow.cpp" line="55"/>
         <source>Style Sheets</source>
         <translation>Arkusze stylów</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="57"/>
+        <source>Troubleshooting</source>
+        <translation>Rozwiązywanie problemów</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="64"/>
         <source>Version: %1</source>
         <translation>Wersja: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="107"/>
+        <location filename="../mainwindow.cpp" line="109"/>
         <source>Warning</source>
         <translation>Ostrzeżenie</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="116"/>
+        <location filename="../mainwindow.cpp" line="118"/>
         <source>Please remove the &lt;b&gt;QT_STYLE_OVERRIDE&lt;/b&gt; environment variable (current value: &lt;b&gt;%1&lt;/b&gt;).</source>
         <translation>Należy usunąć zmienną środowiskową &lt;b&gt;QT_STYLE_OVERRIDE&lt;/b&gt; (bieżąca wartość: &lt;b&gt;%1&lt;/b&gt;).</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="122"/>
-        <source>The &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; environment variable is not set (required value: &lt;b&gt;qt5ct&lt;/b&gt;).</source>
-        <translation>Zmienna środowiskowa &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; nie jest ustawiona (wymagana wartość: &lt;b&gt;qt5ct&lt;/b&gt;).</translation>
+        <location filename="../mainwindow.cpp" line="124"/>
+        <source>The &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; environment variable is not set (required values: &lt;b&gt;qt5ct&lt;/b&gt; or &lt;b&gt;qt6ct&lt;/b&gt;).</source>
+        <translation>Zmienna środowiskowa &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; nie jest ustawiona (wartości wymagane: &lt;b&gt;qt5ct&lt;/b&gt; lub &lt;b&gt;qt6ct&lt;/b&gt;).</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="126"/>
-        <source>The &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; environment variable is not set correctly (current value: &lt;b&gt;%1&lt;/b&gt;, required value: &lt;b&gt;qt5ct&lt;/b&gt;).</source>
-        <translation>Zmienna środowiskowa &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; nie jest ustawiona prawidłowo (bieżąca wartość: &lt;b&gt;%1&lt;/b&gt;, wymagana: &lt;b&gt;qt5ct&lt;/b&gt;).</translation>
+        <location filename="../mainwindow.cpp" line="129"/>
+        <source>The &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; environment variable is not set correctly (current value: &lt;b&gt;%1&lt;/b&gt;, required values: &lt;b&gt;qt5ct&lt;/b&gt; or &lt;b&gt;qt6ct&lt;/b&gt;).</source>
+        <translation>Zmienna środowiskowa &lt;b&gt;QT_QPA_PLATFORMTHEME&lt;/b&gt; nie jest ustawiona poprawnie (bieżąca wartość: &lt;b&gt;%1&lt;/b&gt;, wymagane wartości: &lt;b&gt;qt5ct&lt;/b&gt; lub &lt;b&gt;qt6ct&lt;/b&gt;).</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="133"/>
+        <location filename="../mainwindow.cpp" line="136"/>
         <source>Unable to find &lt;b&gt;libqt5ct-style.so&lt;/b&gt;</source>
         <translation>Nie można znaleźć biblioteki &lt;b&gt;libqt5ct-style.so&lt;/b&gt;</translation>
     </message>
@@ -779,6 +774,49 @@
         <location filename="../qsspage.cpp" line="271"/>
         <source>Unable to copy file</source>
         <translation>Nie można skopiować pliku</translation>
+    </message>
+</context>
+<context>
+    <name>TroubleshootingPage</name>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="20"/>
+        <source>Ignored applications:</source>
+        <translation>Zignorowane aplikacje:</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="29"/>
+        <source>Add...</source>
+        <translation>Dodaj...</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="40"/>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="73"/>
+        <source>Do not apply any styles and color schemes for the listed applications.</source>
+        <translation>Nie stosuj żadnych stylów i schematów kolorów do wymienionych aplikacji.</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="82"/>
+        <source>Make top-level widgets use pure raster surfaces, and do not support non-native GL-based child widgets.</source>
+        <translation>Spraw, aby widżety najwyższego poziomu używały czystych powierzchni rastrowych i nie obsługuj nienatywnych widżetów podrzędnych opartych na GL.</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.ui" line="85"/>
+        <source>Force raster surface</source>
+        <translation>Wymuś powierzchnię rastrową</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.cpp" line="64"/>
+        <source>Select Application</source>
+        <translation>Wybierz aplikację</translation>
+    </message>
+    <message>
+        <location filename="../troubleshootingpage.cpp" line="64"/>
+        <source>Executable files (*)</source>
+        <translation>Pliki wykonywalne (*)</translation>
     </message>
 </context>
 </TS>

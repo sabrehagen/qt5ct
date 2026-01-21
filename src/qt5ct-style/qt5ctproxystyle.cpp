@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -27,21 +27,36 @@
  */
 
 #include <QSettings>
-#include <qt5ct/qt5ct.h>
+#include <QStyleFactory>
 #include "qt5ctproxystyle.h"
 
-Qt5CTProxyStyle::Qt5CTProxyStyle(const QString &key) :
-    QProxyStyle(key)
+Qt5CTProxyStyle::Qt5CTProxyStyle()
+{
+    Qt5CT::registerStyleInstance(this);
+    Qt5CTProxyStyle::reloadSettings();
+}
+
+void Qt5CTProxyStyle::reloadSettings()
 {
     QSettings settings(Qt5CT::configFile(), QSettings::IniFormat);
     m_dialogButtonsHaveIcons = settings.value("Interface/dialog_buttons_have_icons", Qt::PartiallyChecked).toInt();
     m_activateItemOnSingleClick = settings.value("Interface/activate_item_on_single_click", Qt::PartiallyChecked).toInt();
     m_underlineShortcut = settings.value("Interface/underline_shortcut", Qt::PartiallyChecked).toInt();
+
+    QString style = settings.value("Appearance/style", "fusion").toString().toLower();
+    if(style == "qt5ct-style" || !QStyleFactory::keys().contains(style, Qt::CaseInsensitive))
+        style = "fusion";
+
+    if(style != m_style)
+    {
+        setBaseStyle(QStyleFactory::create(style));
+        m_style = style;
+    }
 }
 
 Qt5CTProxyStyle::~Qt5CTProxyStyle()
 {
-    //qDebug("%s", Q_FUNC_INFO);
+    Qt5CT::unregisterStyleInstance(this);
 }
 
 int Qt5CTProxyStyle::styleHint(QStyle::StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
@@ -50,21 +65,21 @@ int Qt5CTProxyStyle::styleHint(QStyle::StyleHint hint, const QStyleOption *optio
     {
         if(m_dialogButtonsHaveIcons == Qt::Unchecked)
             return 0;
-        else if(m_dialogButtonsHaveIcons == Qt::Checked)
+        if(m_dialogButtonsHaveIcons == Qt::Checked)
             return 1;
     }
     else if(hint == QStyle::SH_ItemView_ActivateItemOnSingleClick)
     {
         if(m_activateItemOnSingleClick == Qt::Unchecked)
             return 0;
-        else if(m_activateItemOnSingleClick == Qt::Checked)
+        if(m_activateItemOnSingleClick == Qt::Checked)
             return 1;
     }
     else if(hint == QStyle::SH_UnderlineShortcut)
     {
         if(m_underlineShortcut == Qt::Unchecked)
             return 0;
-        else if(m_underlineShortcut == Qt::Checked)
+        if(m_underlineShortcut == Qt::Checked)
             return 1;
     }
     return QProxyStyle::styleHint(hint, option, widget, returnData);

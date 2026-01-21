@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,10 +26,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifdef QT_NO_KEYWORDS
-#undef QT_NO_KEYWORDS
-#endif
-
 #include <QVariant>
 #include <QSettings>
 #include <QGuiApplication>
@@ -50,7 +46,7 @@
 #include <QFile>
 #include <QFileSystemWatcher>
 
-#include <qt5ct/qt5ct.h>
+#include "qt5ct.h"
 #include "qt5ctplatformtheme.h"
 #ifdef GLOBAL_MENU
 #include <private/qdbusmenubar_p.h>
@@ -59,10 +55,8 @@
 #include <private/qdbustrayicon_p.h>
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
 #include <QStringList>
 #include <qpa/qplatformthemefactory_p.h>
-#endif
 
 Q_LOGGING_CATEGORY(lqt5ct, "qt5ct", QtWarningMsg)
 
@@ -87,13 +81,6 @@ Qt5CTPlatformTheme::Qt5CTPlatformTheme()
 #endif
 }
 
-Qt5CTPlatformTheme::~Qt5CTPlatformTheme()
-{
-    if(m_palette)
-        delete m_palette;
-
-}
-
 #ifdef GLOBAL_MENU
 QPlatformMenuBar *Qt5CTPlatformTheme::createPlatformMenuBar() const
 {
@@ -108,7 +95,6 @@ QPlatformMenuBar *Qt5CTPlatformTheme::createPlatformMenuBar() const
 }
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
 bool Qt5CTPlatformTheme::usePlatformNativeDialog(DialogType type) const
 {
     return m_theme ? m_theme->usePlatformNativeDialog(type) :
@@ -120,7 +106,6 @@ QPlatformDialogHelper *Qt5CTPlatformTheme::createPlatformDialogHelper(DialogType
     return m_theme ? m_theme->createPlatformDialogHelper(type) :
                      QPlatformTheme::createPlatformDialogHelper(type);
 }
-#endif
 
 #ifdef DBUS_TRAY
 QPlatformSystemTrayIcon *Qt5CTPlatformTheme::createPlatformSystemTrayIcon() const
@@ -138,7 +123,9 @@ QPlatformSystemTrayIcon *Qt5CTPlatformTheme::createPlatformSystemTrayIcon() cons
 
 const QPalette *Qt5CTPlatformTheme::palette(QPlatformTheme::Palette type) const
 {
-    return (m_usePalette && m_palette) ? m_palette : QPlatformTheme::palette(type);
+    if (type == QPlatformTheme::SystemPalette && !m_isIgnored)
+        return &m_palette;
+    return QPlatformTheme::palette(type);
 }
 
 const QFont *Qt5CTPlatformTheme::font(QPlatformTheme::Font type) const
@@ -150,6 +137,9 @@ const QFont *Qt5CTPlatformTheme::font(QPlatformTheme::Font type) const
 
 QVariant Qt5CTPlatformTheme::themeHint(QPlatformTheme::ThemeHint hint) const
 {
+    if(m_isIgnored)
+        return QPlatformTheme::themeHint(hint);
+
     switch (hint)
     {
     case QPlatformTheme::CursorFlashTime:
@@ -166,16 +156,12 @@ QVariant Qt5CTPlatformTheme::themeHint(QPlatformTheme::ThemeHint hint) const
         return Qt5CT::iconPaths();
     case QPlatformTheme::DialogButtonBoxLayout:
         return m_buttonBoxLayout;
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     case QPlatformTheme::KeyboardScheme:
         return m_keyboardScheme;
-#endif
     case QPlatformTheme::UiEffects:
         return m_uiEffects;
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
     case QPlatformTheme::WheelScrollLines:
         return m_wheelScrollLines;
-#endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     case QPlatformTheme::ShowShortcutsInContextMenus:
         return m_showShortcutsInContextMenus;
@@ -198,66 +184,54 @@ QIcon Qt5CTPlatformTheme::fileIcon(const QFileInfo &fileInfo, QPlatformTheme::Ic
 
 void Qt5CTPlatformTheme::applySettings()
 {
-    if(!QGuiApplication::desktopSettingsAware())
-        return;
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
-    if(!m_update)
+    if(!QGuiApplication::desktopSettingsAware() || m_isIgnored)
     {
-        //do not override application palette
-        if(QCoreApplication::testAttribute(Qt::AA_SetPalette))
-        {
-            m_usePalette = false;
-            qCDebug(lqt5ct) << "palette support is disabled";
-        }
+        m_update = true;
+        return;
     }
-#endif
 
 #ifdef QT_WIDGETS_LIB
     if(hasWidgets())
     {
         qApp->setFont(m_generalFont);
 
-        //Qt 5.6 or higher should be use themeHint function on application startup.
-        //So, there is no need to call this function first time.
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
         if(m_update)
+        {
+            //Qt 5.6 or higher should be use themeHint function on application startup.
+            //So, there is no need to call this function first time.
             qApp->setWheelScrollLines(m_wheelScrollLines);
-#else
-        qApp->setWheelScrollLines(m_wheelScrollLines);
-#endif
+            Qt5CT::reloadStyleInstanceSettings();
+        }
 
-        if(m_update && qApp->style()->objectName() == "qt5ct-style") //ignore application style
-            qApp->setStyle("qt5ct-style"); //recreate style object
-
-        if(!m_palette)
-            m_palette = new QPalette(qApp->style()->standardPalette());
-
-        if(m_update && m_usePalette)
-            qApp->setPalette(*m_palette);
-
-
-        //do not override application style
-        if(m_prevStyleSheet == qApp->styleSheet())
-            qApp->setStyleSheet(m_userStyleSheet);
-        else
-            qCDebug(lqt5ct) << "custom style sheet is disabled";
-        m_prevStyleSheet = m_userStyleSheet;
+        if (m_userStyleSheet != m_prevStyleSheet) {
+            // prepend our stylesheet to that of the application
+            // (first removing any previous stylesheet we have set)
+            QString appStyleSheet = qApp->styleSheet();
+            int prevIndex = appStyleSheet.indexOf(m_prevStyleSheet);
+            if (prevIndex >= 0) {
+                appStyleSheet.remove(prevIndex, m_prevStyleSheet.size());
+                qApp->setStyleSheet(m_userStyleSheet + appStyleSheet);
+            } else {
+                qCDebug(lqt5ct) << "custom style sheet is disabled";
+            }
+            m_prevStyleSheet = m_userStyleSheet;
+        }
     }
 #endif
     QGuiApplication::setFont(m_generalFont); //apply font
     if(m_update)
+    {
         QIconLoader::instance()->updateSystemTheme(); //apply icons
-
-    if(m_palette && m_usePalette)
-        QGuiApplication::setPalette(*m_palette); //apply palette
+        QGuiApplication::setPalette(QGuiApplication::palette()); //apply palette
+    }
 
 #ifdef QT_WIDGETS_LIB
-    if(m_palette && m_usePalette && !m_update)
-        qApp->setPalette(*m_palette);
-
     if(hasWidgets())
     {
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
+        if(m_update)
+            qApp->setPalette(*palette());
+#endif
         for(QWidget *w : qApp->allWidgets())
         {
             QEvent e(QEvent::ThemeChange);
@@ -292,25 +266,19 @@ void Qt5CTPlatformTheme::updateSettings()
 
 void Qt5CTPlatformTheme::readSettings()
 {
-    if(m_palette)
-    {
-        delete m_palette;
-        m_palette = nullptr;
-    }
-
     QSettings settings(Qt5CT::configFile(), QSettings::IniFormat);
 
     settings.beginGroup("Appearance");
     m_style = settings.value("style", "Fusion").toString();
+    m_palette = *QPlatformTheme::palette(SystemPalette);
     QString schemePath = settings.value("color_scheme_path").toString();
     if(!schemePath.isEmpty() && settings.value("custom_palette", false).toBool())
     {
         schemePath = Qt5CT::resolvePath(schemePath); //replace environment variables
-        m_palette = new QPalette(loadColorScheme(schemePath));
+        m_palette = Qt5CT::loadColorScheme(schemePath, m_palette);
     }
     m_iconTheme = settings.value("icon_theme").toString();
     //load dialogs
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     if(!m_update)
     {
         //do not mix gtk2 style and gtk3 dialogs
@@ -328,13 +296,14 @@ void Qt5CTPlatformTheme::readSettings()
         else if(name == QLatin1String("gtk3") && keys.contains("qt5gtk3"))
             m_theme.reset(QPlatformThemeFactory::create("qt5gtk3"));
     }
-#endif
 
     settings.endGroup();
 
     settings.beginGroup("Fonts");
-    m_generalFont = settings.value("general", QPlatformTheme::font(QPlatformTheme::SystemFont)).value<QFont>();
-    m_fixedFont = settings.value("fixed", QPlatformTheme::font(QPlatformTheme::FixedFont)).value<QFont>();
+    m_generalFont = QGuiApplication::font();
+    m_generalFont.fromString(settings.value("general", QGuiApplication::font()).toString());
+    m_fixedFont = QGuiApplication::font();
+    m_fixedFont.fromString(settings.value("fixed", QGuiApplication::font()).toString());
     settings.endGroup();
 
     settings.beginGroup("Interface");
@@ -345,10 +314,8 @@ void Qt5CTPlatformTheme::readSettings()
     m_showShortcutsInContextMenus = settings.value("show_shortcuts_in_context_menus", true).toBool();
     m_buttonBoxLayout = QPlatformTheme::themeHint(QPlatformTheme::DialogButtonBoxLayout).toInt();
     m_buttonBoxLayout = settings.value("buttonbox_layout", m_buttonBoxLayout).toInt();
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     m_keyboardScheme = QPlatformTheme::themeHint(QPlatformTheme::KeyboardScheme).toInt();
     m_keyboardScheme = settings.value("keyboard_scheme", m_keyboardScheme).toInt();
-#endif
     QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, !settings.value("menus_have_icons", true).toBool());
     m_toolButtonStyle = settings.value("toolbutton_style", Qt::ToolButtonFollowStyle).toInt();
     m_wheelScrollLines = settings.value("wheel_scroll_lines", 3).toInt();
@@ -380,8 +347,20 @@ void Qt5CTPlatformTheme::readSettings()
     QStringList qssPaths = settings.value("stylesheets").toStringList();
     m_userStyleSheet = loadStyleSheets(qssPaths);
 #endif
-
     settings.endGroup();
+
+    //load troubleshooting
+    if(!m_update)
+    {
+        settings.beginGroup("Troubleshooting");
+        m_isIgnored = settings.value("ignored_applications").toStringList().contains(QCoreApplication::applicationFilePath());
+        int forceRasterWidgets = settings.value("force_raster_widgets", Qt::PartiallyChecked).toInt();
+        if(!m_isIgnored && forceRasterWidgets == Qt::Checked)
+            QCoreApplication::setAttribute(Qt::AA_ForceRasterWidgets, true);
+        else if(!m_isIgnored && forceRasterWidgets == Qt::Unchecked)
+            QCoreApplication::setAttribute(Qt::AA_ForceRasterWidgets, false);
+        settings.endGroup();
+    }
 }
 
 #ifdef QT_WIDGETS_LIB
@@ -402,58 +381,10 @@ QString Qt5CTPlatformTheme::loadStyleSheets(const QStringList &paths)
         QFile file(path);
         file.open(QIODevice::ReadOnly);
         content.append(QString::fromUtf8(file.readAll()));
+        if(!content.endsWith(QChar::LineFeed))
+            content.append(QChar::LineFeed);
     }
-    QRegularExpression regExp("//.*(\\n|$)");
-    content.remove(regExp);
+    static const QRegularExpression regExp("//.*\n");
+    content.replace(regExp, "\n");
     return content;
-}
-
-QPalette Qt5CTPlatformTheme::loadColorScheme(const QString &filePath)
-{
-    QPalette customPalette;
-    QSettings settings(filePath, QSettings::IniFormat);
-    settings.beginGroup("ColorScheme");
-    QStringList activeColors = settings.value("active_colors").toStringList();
-    QStringList inactiveColors = settings.value("inactive_colors").toStringList();
-    QStringList disabledColors = settings.value("disabled_colors").toStringList();
-    settings.endGroup();
-
-    if(activeColors.count() == QPalette::NColorRoles &&
-            inactiveColors.count() == QPalette::NColorRoles &&
-            disabledColors.count() == QPalette::NColorRoles)
-    {
-        for (int i = 0; i < QPalette::NColorRoles; i++)
-        {
-            QPalette::ColorRole role = QPalette::ColorRole(i);
-            customPalette.setColor(QPalette::Active, role, QColor(activeColors.at(i)));
-            customPalette.setColor(QPalette::Inactive, role, QColor(inactiveColors.at(i)));
-            customPalette.setColor(QPalette::Disabled, role, QColor(disabledColors.at(i)));
-        }
-    }
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-    else if(activeColors.count() == QPalette::NColorRoles - 1 &&
-            inactiveColors.count() == QPalette::NColorRoles - 1 &&
-            disabledColors.count() == QPalette::NColorRoles - 1)
-    {
-        //old format compatibility
-        for (int i = 0; i < QPalette::NColorRoles - 1; i++)
-        {
-            QPalette::ColorRole role = QPalette::ColorRole(i);
-            customPalette.setColor(QPalette::Active, role, QColor(activeColors.at(i)));
-            customPalette.setColor(QPalette::Inactive, role, QColor(inactiveColors.at(i)));
-            customPalette.setColor(QPalette::Disabled, role, QColor(disabledColors.at(i)));
-        }
-        QColor textColor = customPalette.text().color();
-        textColor.setAlpha(128);
-        customPalette.setColor(QPalette::Active, QPalette::PlaceholderText, textColor);
-        customPalette.setColor(QPalette::Inactive, QPalette::PlaceholderText, textColor);
-        customPalette.setColor(QPalette::Disabled, QPalette::PlaceholderText, textColor);
-    }
-#endif
-    else
-    {
-        customPalette = *QPlatformTheme::palette(SystemPalette); //load fallback palette
-    }
-
-    return customPalette;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -40,13 +40,11 @@
 
 #if !defined(QT_NO_DBUS) && defined(QT_DBUS_LIB)
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)) && !defined(QT_NO_SYSTEMTRAYICON)
+#if !defined(QT_NO_SYSTEMTRAYICON)
 #define DBUS_TRAY
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
 #define GLOBAL_MENU
-#endif
 
 #endif
 
@@ -65,19 +63,14 @@ class Qt5CTPlatformTheme : public QObject, public QPlatformTheme
 public:
     Qt5CTPlatformTheme();
 
-    virtual ~Qt5CTPlatformTheme();
-
-
     //virtual QPlatformMenuItem* createPlatformMenuItem() const;
     //virtual QPlatformMenu* createPlatformMenu() const;
 #ifdef GLOBAL_MENU
     virtual QPlatformMenuBar* createPlatformMenuBar() const override;
 #endif
     //virtual void showPlatformMenuBar() {}
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     virtual bool usePlatformNativeDialog(DialogType type) const override;
     virtual QPlatformDialogHelper *createPlatformDialogHelper(DialogType type) const override;
-#endif
 #ifdef DBUS_TRAY
     virtual QPlatformSystemTrayIcon *createPlatformSystemTrayIcon() const override;
 #endif
@@ -95,7 +88,7 @@ public:
     //virtual QList<QKeySequence> keyBindings(QKeySequence::StandardKey key) const;
     //virtual QString standardButtonText(int button) const;
 
-private Q_SLOTS:
+private slots:
     void applySettings();
 #ifdef QT_WIDGETS_LIB
     void createFSWatcher();
@@ -108,22 +101,19 @@ private:
     bool hasWidgets();
 #endif
     QString loadStyleSheets(const QStringList &paths);
-    QPalette loadColorScheme(const QString &filePath);
     QString m_style, m_iconTheme, m_userStyleSheet, m_prevStyleSheet;
-    QPalette *m_palette = nullptr;
+    QPalette m_palette;
     QFont m_generalFont, m_fixedFont;
     int m_doubleClickInterval;
     int m_cursorFlashTime;
     int m_uiEffects;
     int m_buttonBoxLayout;
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     int m_keyboardScheme;
-#endif
     bool m_update = false;
-    bool m_usePalette = true;
     int m_toolButtonStyle = Qt::ToolButtonFollowStyle;
     int m_wheelScrollLines = 3;
     bool m_showShortcutsInContextMenus = false;
+    bool m_isIgnored = false;
 #ifdef GLOBAL_MENU
     mutable bool m_dbusGlobalMenuAvailable = false;
     mutable bool m_checkDBusGlobalMenu = true;
@@ -133,10 +123,7 @@ private:
     mutable bool m_checkDBusTray = true;
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     QScopedPointer<QPlatformTheme> m_theme;
-#endif
-
 };
 
 Q_DECLARE_LOGGING_CATEGORY(lqt5ct)

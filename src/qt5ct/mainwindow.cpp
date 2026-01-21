@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -39,6 +39,7 @@
 #include "iconthemepage.h"
 #include "interfacepage.h"
 #include "qsspage.h"
+#include "troubleshootingpage.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifdef USE_WIDGETS
     m_ui->tabWidget->addTab(new QSSPage(this), tr("Style Sheets"));
 #endif
+    m_ui->tabWidget->addTab(new TroubleshootingPage(this), tr("Troubleshooting"));
 
     QSettings settings(Qt5CT::configFile(), QSettings::IniFormat);
     restoreGeometry(settings.value("SettingsWindow/geometry").toByteArray());
@@ -119,12 +121,13 @@ void MainWindow::checkConfiguration()
 
     if(!env.contains("QT_QPA_PLATFORMTHEME"))
     {
-        m_errors << tr("The <b>QT_QPA_PLATFORMTHEME</b> environment variable is not set (required value: <b>qt5ct</b>).");
+        m_errors << tr("The <b>QT_QPA_PLATFORMTHEME</b> environment variable is not set (required values: <b>qt5ct</b> or <b>qt6ct</b>).");
     }
-    else if(env.value("QT_QPA_PLATFORMTHEME") != "qt5ct")
+    else if(env.value("QT_QPA_PLATFORMTHEME") != QStringLiteral("qt5ct") &&
+            env.value("QT_QPA_PLATFORMTHEME") != QStringLiteral("qt6ct"))
     {
         m_errors << tr("The <b>QT_QPA_PLATFORMTHEME</b> environment variable is not set correctly "
-                       "(current value: <b>%1</b>, required value: <b>qt5ct</b>).")
+                       "(current value: <b>%1</b>, required values: <b>qt5ct</b> or <b>qt6ct</b>).")
                     .arg(env.value("QT_QPA_PLATFORMTHEME"));
     }
 

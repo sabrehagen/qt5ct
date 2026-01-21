@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -48,7 +48,7 @@ public:
 
     void writeSettings() override;
 
-private Q_SLOTS:
+private slots:
     void on_qssListWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *);
     void on_createButton_clicked();
     void on_editButton_clicked();

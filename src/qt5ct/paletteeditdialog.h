@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2020, Ilya Kotov <forkotov02@ya.ru>
+ * Copyright (c) 2014-2025, Ilya Kotov <forkotov02@ya.ru>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -49,10 +49,10 @@ public:
 
     QPalette selectedPalette() const;
 
-Q_SIGNALS:
+signals:
     void paletteChanged(const QPalette &p);
 
-private Q_SLOTS:
+private slots:
     void on_tableWidget_itemClicked(QTableWidgetItem *item);
     void on_resetPaletteButton_clicked();
     void on_buildInactiveButton_clicked();
