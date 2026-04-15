@@ -1,0 +1,8 @@
+# Build artifacts (qmake && make)
+.qmake.stash
+Makefile
+src/*/Makefile
+src/*/.build/
+src/*/lib*.so*
+src/qt5ct/qt5ct
+src/qt5ct/translations/*.qm
