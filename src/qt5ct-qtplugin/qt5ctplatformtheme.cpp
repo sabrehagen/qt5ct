@@ -112,8 +112,8 @@ QPlatformSystemTrayIcon *Qt5CTPlatformTheme::createPlatformSystemTrayIcon() cons
 {
     if(m_checkDBusTray)
     {
-        QDBusMenuConnection conn;
-        m_dbusTrayAvailable = conn.isStatusNotifierHostRegistered();
+        QDBusConnection conn = QDBusConnection::sessionBus();
+        m_dbusTrayAvailable = conn.interface()->isServiceRegistered("org.kde.StatusNotifierWatcher");
         m_checkDBusTray = false;
         qCDebug(lqt5ct) << "D-Bus system tray:" << (m_dbusTrayAvailable ? "yes" : "no");
     }
